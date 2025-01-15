@@ -4,3 +4,14 @@ create table if not exists photo (
     content_type varchar(255) not null,
     data bytea
 );
+
+create table if not exists user_account (
+    id bigint auto_increment primary key,
+    user_name varchar(255) not null,
+    password varchar(255) not null,
+    first_name varchar(255) not null,
+    last_name varchar(255) not null,
+    email varchar(255) not null,
+    created_at timestamp not null,
+    role varchar(255) not null
+);
