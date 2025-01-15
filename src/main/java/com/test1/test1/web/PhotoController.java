@@ -19,15 +19,15 @@ public class PhotoController {
         this.photoService = photoService;
     }
 
-    List<Photo> photos = List.of(new Photo("photo1", "1"), new Photo("photo2", "2"));
+//    List<Photo> photos = List.of(new Photo("photo1", "1"), new Photo("photo2", "2"));
 
     @GetMapping("/photo")
-    public Collection<Photo> getPhotos() {
+    public Iterable<Photo> getPhotos() {
         return photoService.getPhotos();
     }
 
     @GetMapping("/photo/{id}")
-    public Photo getPhotoById(@PathVariable String id) throws PhotoNotFoundException {
+    public Photo getPhotoById(@PathVariable Integer id) throws PhotoNotFoundException {
         Photo photo = photoService.getPhoto(id);
         if (photo == null) {
             throw new PhotoNotFoundException();
@@ -36,11 +36,12 @@ public class PhotoController {
     }
 
     @DeleteMapping("/photo/{id}")
-    public void deletePhotoById(@PathVariable String id) throws PhotoNotFoundException {
-        Photo photo = photoService.remove(id);
+    public void deletePhotoById(@PathVariable Integer id) throws PhotoNotFoundException {
+        Photo photo = photoService.getPhoto(id);
         if (photo == null) {
             throw new PhotoNotFoundException();
         }
+        photoService.remove(id);
     }
 
 //    @PostMapping("/photo")

@@ -17,7 +17,7 @@ public class DownloadController {
     }
 
     @GetMapping("/download/{id}")
-    public ResponseEntity<byte[]> downloadPhoto(@PathVariable String id) {
+    public ResponseEntity<byte[]> downloadPhoto(@PathVariable Integer id) {
 
         Photo photo = photoService.getPhoto(id);
         if (photo == null) {
@@ -27,7 +27,7 @@ public class DownloadController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf(photo.getContentType()));
         ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
-                .filename(photo.getName())
+                .filename(photo.getFileName())
                 .build();
         headers.setContentDisposition(contentDisposition);
         return new ResponseEntity<>(data, headers, HttpStatus.OK);

@@ -1,6 +1,7 @@
 package com.test1.test1.service;
 
 import com.test1.test1.model.Photo;
+import com.test1.test1.repository.PhotoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -12,35 +13,34 @@ import java.util.UUID;
 @Service
 public class PhotoService {
 
-    private Map<String, Photo> db = new HashMap<>() {{
-        put("1", new Photo("photo1", "1"));
-        put("2", new Photo("photo2", "2"));
-    }};
+    private final PhotoRepository photoRepository;
 
-    public Collection<Photo> getPhotos() {
-        return db.values();
+    public PhotoService(PhotoRepository photoRepository) {
+        this.photoRepository = photoRepository;
     }
 
-    public Photo getPhoto(String id) {
-        return db.get(id);
+    public Iterable<Photo> getPhotos() {
+        return photoRepository.findAll();
     }
 
-    public Photo remove(String id) {
-        return db.remove(id);
+    public Photo getPhoto(Integer id) {
+        return photoRepository.findById(id).orElse(null);
+    }
+
+    public void remove(Integer id) {
+        photoRepository.deleteById(id);
     }
 
     public int getPhotoSize() {
-        return db.size();
+        return (int) photoRepository.count();
     }
 
     public Photo put(String filename, String contentType, byte[] data) {
         Photo photo = new Photo();
-        String uuid = UUID.randomUUID().toString();
-        photo.setId(uuid);
-        photo.setName(filename);
+        photo.setFileName(filename);
         photo.setData(data);
         photo.setContentType(contentType);
-        db.put(uuid, photo);
+        photoRepository.save(photo);
         return photo;
     }
 }

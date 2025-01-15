@@ -1,16 +1,18 @@
 package com.test1.test1.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
+@Table("PHOTO")
 public class Photo {
     @NotEmpty @NotNull
-    private String name;
+    private String fileName;
 
-    @NotEmpty @Digits(integer = 10, fraction = 0)
-    private String id;
+    @Id
+    private Integer id;
 
     @JsonIgnore
     private byte[] data;
@@ -28,10 +30,10 @@ public class Photo {
     public Photo() {
     }
 
-    public Photo(String name, String id) {
-        this.name = name;
-        this.id = id;
-    }
+//    public Photo(String name, String id) {
+//        this.name = name;
+//        this.id = id;
+//    }
 
     public byte[] getData() {
         return data;
@@ -41,19 +43,19 @@ public class Photo {
         this.data = data;
     }
 
-    public String getName() {
-        return name;
+    public String getFileName() {
+        return fileName;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 }
