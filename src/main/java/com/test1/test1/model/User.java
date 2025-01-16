@@ -3,7 +3,9 @@ package com.test1.test1.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Table("USER")
+import java.time.LocalDateTime;
+
+@Table("USER_ACCOUNT")
 public class User {
     @Id
     private Integer id;
@@ -20,16 +22,27 @@ public class User {
 
     private String role;
 
+    private LocalDateTime createdAt;
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createAt) {
+        this.createdAt = createAt;
+    }
+
     public User() {
     }
 
-    public User(String userName, String password, String firstName, String lastName, String email, String role) {
+    public User(String userName, String password, String firstName, String lastName, String email, String role, LocalDateTime createAt) {
         this.userName = userName;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.role = role;
+        this.createdAt = createAt;
     }
 
     public Integer getId() {
