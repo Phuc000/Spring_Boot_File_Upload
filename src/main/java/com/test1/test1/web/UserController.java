@@ -42,4 +42,17 @@ public class UserController {
         }
         return user;
     }
+
+    @PostMapping("/update_profile")
+    public User updateProfile(@RequestBody Map<String, String> payload) throws NoSuchAlgorithmException {
+        String username = payload.get("username") == null ? "" : payload.get("username");
+        String password = payload.get("password") == null ? "" : payload.get("password");
+        String firstName = payload.get("firstName") == null ? "" : payload.get("firstName");
+        String lastName = payload.get("lastName") == null ? "" : payload.get("lastName");
+        User user = userService.updateProfile(username, password, firstName, lastName);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+        return user;
+    }
 }

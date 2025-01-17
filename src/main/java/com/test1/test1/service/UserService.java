@@ -77,4 +77,26 @@ public class UserService {
         System.out.println("signup");
         return put(userName, password, firstName, lastName, email, "user");
     }
+
+    public User updateProfile(String username, String password, String firstName, String lastName) {
+        User user = userRepository.findByUserName(username);
+        if (user == null) {
+            return null;
+        }
+        if (!password.isEmpty()) {
+            try {
+                user.setPassword(getMd5(password));
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+        }
+        if (!firstName.isEmpty()) {
+            user.setFirstName(firstName);
+        }
+        if (!lastName.isEmpty()) {
+            user.setLastName(lastName);
+        }
+        userRepository.save(user);
+        return user;
+    }
 }
