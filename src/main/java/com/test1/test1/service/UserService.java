@@ -99,4 +99,12 @@ public class UserService {
         userRepository.save(user);
         return user;
     }
+
+    public User getUserByUsername(String username) {
+        User user = userRepository.findByUserName(username);
+        if (user == null) {
+            return null;
+        }
+        return user;
+    }
 }

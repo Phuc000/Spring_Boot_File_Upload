@@ -2,7 +2,12 @@ package com.test1.test1.web;
 
 import com.test1.test1.PhotoNotFoundException;
 import com.test1.test1.model.Photo;
+import com.test1.test1.model.User;
 import com.test1.test1.service.PhotoService;
+import com.test1.test1.service.UserPhotoService;
+import com.test1.test1.service.UserService;
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,8 +20,14 @@ public class PhotoController {
 
     private final PhotoService photoService;
 
-    public PhotoController(PhotoService photoService) {
+    private final UserService userService;
+
+    private final UserPhotoService userPhotoService;
+
+    public PhotoController(PhotoService photoService, UserService userService, UserPhotoService userPhotoService) {
         this.photoService = photoService;
+        this.userService = userService;
+        this.userPhotoService = userPhotoService;
     }
 
 //    List<Photo> photos = List.of(new Photo("photo1", "1"), new Photo("photo2", "2"));
@@ -55,6 +66,16 @@ public class PhotoController {
     public Photo addRealPhoto(@RequestPart("data") MultipartFile file) throws IOException {
         // generate a random uuid for the photo
         return photoService.put(file.getOriginalFilename(), file.getContentType(), file.getBytes());
+    }
+
+    @PostMapping("/real_photo_with_user")
+    public Photo addRealPhoto(@RequestPart("data") MultipartFile file, HttpServletRequest request) throws IOException {
+        Claims claims = (Claims) request.getAttribute("claims");
+        String username = claims.getSubject();
+        User user = userService.getUserByUsername(username);
+        Photo photo = photoService.put(file.getOriginalFilename(), file.getContentType(), file.getBytes());
+        userPhotoService.addUserPhoto(user.getId(), photo.getId());
+        return photo;
     }
 
 

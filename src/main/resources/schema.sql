@@ -15,3 +15,11 @@ create table if not exists user_account (
     created_at timestamp not null,
     role varchar(255) not null
 );
+
+create table if not exists user_photo (
+    user_id bigint not null,
+    photo_id bigint not null,
+    primary key (user_id, photo_id),
+    foreign key (user_id) references user_account(id),
+    foreign key (photo_id) references photo(id)
+);

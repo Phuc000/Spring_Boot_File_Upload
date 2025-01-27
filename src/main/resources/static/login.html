@@ -37,8 +37,9 @@
             });
 
             if (response.ok) {
-                const user = await response.json();
-                document.getElementById('message').innerText = `Hello ${user.firstName} ${user.lastName}`;
+                const data = await response.json();
+                localStorage.setItem('token', data.token);
+                document.getElementById('message').innerText = `Hello ${data.firstName} ${data.lastName}`;
             } else {
                 alert('Login failed');
             }

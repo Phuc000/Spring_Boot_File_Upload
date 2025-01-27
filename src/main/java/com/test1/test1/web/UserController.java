@@ -2,6 +2,7 @@ package com.test1.test1.web;
 
 import com.test1.test1.model.User;
 import com.test1.test1.service.UserService;
+import com.test1.test1.util.JwtUtil;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,14 +34,15 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public User login(@RequestBody Map<String, String> payload) throws NoSuchAlgorithmException {
+    public Map<String, String> login(@RequestBody Map<String, String> payload) throws NoSuchAlgorithmException {
         String username = payload.get("username");
         String password = payload.get("password");
         User user = userService.login(username, password);
         if (user == null) {
             throw new RuntimeException("User not found");
         }
-        return user;
+        String token = JwtUtil.generateToken(username);
+        return Map.of("token", token, "firstName", user.getFirstName(), "lastName", user.getLastName());
     }
 
     @PostMapping("/update_profile")
