@@ -14,6 +14,10 @@ public class UserPhotoService {
     }
 
     public void addUserPhoto(Integer userId, Integer photoId) {
-        userPhotoRepository.save(new UserPhoto(userId, photoId));
+        UserPhoto userPhoto = new UserPhoto(userId, photoId);
+        // log the userPhoto to the console
+        System.out.println(userPhoto.show());
+        // add the userPhoto to the database
+        userPhotoRepository.save(userPhoto);
     }
 }

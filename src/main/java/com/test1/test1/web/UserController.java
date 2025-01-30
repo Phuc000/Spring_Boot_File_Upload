@@ -3,6 +3,9 @@ package com.test1.test1.web;
 import com.test1.test1.model.User;
 import com.test1.test1.service.UserService;
 import com.test1.test1.util.JwtUtil;
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,5 +59,12 @@ public class UserController {
             throw new RuntimeException("User not found");
         }
         return user;
+    }
+
+    @GetMapping("/profile")
+    public User getProfile(HttpServletRequest request) {
+        Claims claims = (Claims) request.getAttribute("claims");
+        String username = claims.getSubject();
+        return userService.getUserByUsername(username);
     }
 }

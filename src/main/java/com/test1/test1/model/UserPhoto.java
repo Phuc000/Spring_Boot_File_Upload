@@ -3,7 +3,7 @@ package com.test1.test1.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Table("user_photo")
+@Table("USER_PHOTO")
 public class UserPhoto {
 
     @Id
@@ -29,5 +29,10 @@ public class UserPhoto {
 
     public void setPhotoId(Integer photoId) {
         this.photoId = photoId;
+    }
+
+    public boolean show() {
+        System.out.println("UserPhoto: userId=" + userId + ", photoId=" + photoId);
+        return true;
     }
 }
